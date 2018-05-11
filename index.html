@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
     <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
     <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
-    <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+    <script src="https://unpkg.com/clipboard@2.0.0/dist/clipboard.min.js"></script>
 </head>
 <body>
 
@@ -37,7 +37,7 @@
                     <i-input v-model="inputText" placeholder="Input Something..." style="width: 80%;margin-left: 10%;margin-right: auto;margin-top: 65px"></i-input>
                     <div style="margin-top: 35px">
                         <i-input v-model="encodeText" placeholder="..." id="text1" style="width: 20%;margin-left: 10%;"></i-input>
-                        <i-button type="ghost" style="margin-left: 5%;width: 55%" @click="" :disabled="disabled">COPY</i-button>
+                        <i-button type="ghost" style="margin-left: 5%;width: 55%" @click="copyToast" :disabled="disabled" class="btn" data-clipboard-target="#text1 input">COPY</i-button>
                     </div>
 
                 </i-content>
@@ -160,6 +160,8 @@
 
             this.$refs.sider.toggleCollapse(true);
             console.log(this.decode(this.encode('asd')));
+            new ClipboardJS('.btn');
+            this.$Loading.finish();
 
 
         },
@@ -206,7 +208,7 @@
                 return res;
             },
             copyText(){
-                var ele = document.getElementById("text1");
+                var ele = document.getElementById(" ");
                 ele.select();
                 document.execCommand("Copy");
             },
@@ -218,6 +220,9 @@
 
                 window.location.href="../index.html"
             },
+            copyToast(){
+                this.$Message.info('Success')
+            }
         }
     });
 
