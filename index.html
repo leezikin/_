@@ -17,7 +17,7 @@
                 <i-menu active-name="1-1" theme="dark" width="auto" :class="menuitemClasses" @on-select="menuSelect">
                     <menu-item name="1-1">
                         <icon type="home"></icon>
-                        <span>主页</span>
+                        <span>Home</span>
                     </menu-item>
                     <!--<menu-item name="1-2">-->
                         <!--<icon type="settings"></icon>-->
@@ -25,20 +25,37 @@
                     <!--</menu-item>-->
                     <menu-item name="1-2">
                         <icon type="information-circled"></icon>
-                        <span>关于</span>
+                        <span>About</span>
                     </menu-item>
                 </i-menu>
 
 
             </sider>
             <layout v-show="isCollapsed && show == '1-1'">
+                <h1 style="text-align: center;margin-top: 25px">Empty Text</h1>
                 <i-content :style="{margin: '0 40px 40px',paddingTop:'20px'}">
 
-                    <i-input v-model="inputText" placeholder="Input Something..." style="width: 80%;margin-left: 10%;margin-right: auto;margin-top: 65px"></i-input>
-                    <div style="margin-top: 35px">
-                        <i-input v-model="encodeText" placeholder="..." id="text1" style="width: 20%;margin-left: 10%;"></i-input>
-                        <i-button type="ghost" style="margin-left: 5%;width: 55%" @click="copyToast" :disabled="disabled" class="btn" data-clipboard-target="#text1 input">COPY</i-button>
-                    </div>
+                    <tabs type="card" style="margin-top: 60px;">
+                        <tab-pane label="ENCODE">
+                            <i-input v-model="inputText" placeholder="Input Something..." style="width: 80%;margin-left: 10%;margin-right: auto;margin-top: 65px"></i-input>
+                            <div style="margin-top: 35px">
+                                <i-input v-model="encodeText" placeholder="..." id="text1" style="width: 20%;margin-left: 10%;"></i-input>
+                                <i-button type="ghost" style="margin-left: 5%;width: 55%" @click="copyToast" :disabled="disabled" class="btn" data-clipboard-target="#text1 input">COPY</i-button>
+                            </div></tab-pane>
+                        <tab-pane label="DECODE">
+                            <div style="margin-top: 65px">
+                                <i-input v-model="inputText2" placeholder="..." style="width: 20%;margin-left: 10%;"></i-input>
+                                <i-button type="ghost" style="margin-left: 5%;width: 55%" @click="" :disabled="disabled2" class="btn2" data-clipboard-target="#text2 input">COPY</i-button>
+                            </div>
+                            <i-input v-model="decodeText" placeholder="..." style="width: 80%;margin-left: 10%;margin-right: auto;margin-top: 35px" id="text2"></i-input>
+                        </tab-pane>
+
+
+                        </tab-pane>
+                    </tabs>
+
+
+
 
                 </i-content>
             </layout>
@@ -48,10 +65,10 @@
                         <img @click="goHome" style="width:120px" src="https://avatars3.githubusercontent.com/u/24774313"/><br>
                         <span @click="goHome">@leezikin</span>
                         <div style="width: 40%;margin: auto;margin-top: 30px">
-                            本站所使用的API从网络获取。获取与使用行为或有侵犯产品权益的嫌疑。若被告知需停止使用，本人将及时删除此页面。
+                            simple encode/decode for <a href="https://umpox.github.io/zero-width-detection/">@umpox/zero-width-detection</a>
                         </div>
                         <row type="flex" justify="center">
-                            <i-col span="12" style="width: 200px;margin-top: 30px"><a href="https://github.com/leezikin/leezikin.github.io">GitHub</a></i-col>
+                            <i-col span="12" style="width: 200px;margin-top: 30px"><a href="https://github.com/leezikin/_">GitHub</a></i-col>
                             <i-col span="12" style="width: 200px;margin-top: 30px"><a href="mailto:admin@maoa-l.xyz">Email</a></i-col>
                         </row>
 
@@ -130,8 +147,11 @@
             loading:false,
             interval:null,
             inputText:'',
+            inputText2:'',
+//            decodeText:'',
 //            encodeText:'',
             disabled:true,
+            disabled2:true,
         },
         beforeCreate(){
             this.$Loading.start();
@@ -154,13 +174,48 @@
                 }
 
             },
+            decodeText: function(){
+                if(this.inputText2 != ''){
+                    this.disabled2 = false
+                    return this.decode(this.inputText2)
+                }
+                else{
+                    this.disabled2 = true
+                    return '';
+                }
+
+            },
 
         },
         mounted(){
 
             this.$refs.sider.toggleCollapse(true);
             console.log(this.decode(this.encode('asd')));
-            new ClipboardJS('.btn');
+            var clipboard = new ClipboardJS('.btn');
+            clipboard.on('success', function(e) {
+//                console.info('Action:', e.action);
+//                console.info('Text:', e.text);
+//                console.info('Trigger:', e.trigger);
+                ha.$Message.success('Success')
+                e.clearSelection();
+            });
+
+            clipboard.on('error', function(e) {
+                ha.$Message.error('Error')
+            });
+            var clipboard2 = new ClipboardJS('.btn2');
+            clipboard2.on('success', function(e) {
+//                console.info('Action:', e.action);
+//                console.info('Text:', e.text);
+//                console.info('Trigger:', e.trigger);
+                ha.$Message.success('Success')
+                e.clearSelection();
+            });
+
+            clipboard2.on('error', function(e) {
+                ha.$Message.error('Error')
+            });
+
             this.$Loading.finish();
 
 
@@ -218,10 +273,10 @@
             },
             goHome(){
 
-                window.location.href="../index.html"
+                window.location.href="https://leezikin.github.io/"
             },
             copyToast(){
-                this.$Message.info('Success')
+//                this.$Message.info('Success')
             }
         }
     });
