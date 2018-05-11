@@ -177,7 +177,7 @@
             decodeText: function(){
                 if(this.inputText2 != ''){
                     this.disabled2 = false
-                    return this.decode(this.inputText2)
+                    return this.decode(this.inputText2.replace(/[^​‌‍﻿]/g, ''))
                 }
                 else{
                     this.disabled2 = true
