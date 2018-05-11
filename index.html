@@ -190,12 +190,10 @@
         mounted(){
 
             this.$refs.sider.toggleCollapse(true);
-            console.log(this.decode(this.encode('asd')));
+
             var clipboard = new ClipboardJS('.btn');
             clipboard.on('success', function(e) {
-//                console.info('Action:', e.action);
-//                console.info('Text:', e.text);
-//                console.info('Trigger:', e.trigger);
+
                 ha.$Message.success('Success')
                 e.clearSelection();
             });
@@ -205,9 +203,7 @@
             });
             var clipboard2 = new ClipboardJS('.btn2');
             clipboard2.on('success', function(e) {
-//                console.info('Action:', e.action);
-//                console.info('Text:', e.text);
-//                console.info('Trigger:', e.trigger);
+
                 ha.$Message.success('Success')
                 e.clearSelection();
             });
